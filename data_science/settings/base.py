@@ -45,6 +45,10 @@ LOCAL_APPS = [
     'apps.user',
     'apps.profiles',
     'apps.common',
+    'apps.courses',
+    'apps.membership',
+    'apps.payments',
+    'apps.blog',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -132,6 +136,7 @@ MEDIA_ROOT = BASE_DIR / "mediafiles"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+AUTH_USER_MODEL = "user.User"
 
 import logging
 import logging.config
