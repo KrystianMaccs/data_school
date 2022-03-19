@@ -40,10 +40,10 @@ THIRD_PARTY_APPS = [
     'django_countries',
     'phonenumber_field',
     'paystack',
-    'agora',
 ]
 
 LOCAL_APPS = [
+    'apps.autoscraper'
     'apps.membership',
     'apps.classroom',
     'apps.profiles',
