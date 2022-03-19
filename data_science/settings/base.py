@@ -39,17 +39,26 @@ THIRD_PARTY_APPS = [
     'django_filters',
     'django_countries',
     'phonenumber_field',
+    'paystack',
+    'agora',
 ]
 
 LOCAL_APPS = [
-    'apps.user',
-    'apps.profiles',
-    'apps.common',
-    'apps.courses',
     'apps.membership',
+    'apps.classroom',
+    'apps.profiles',
     'apps.payments',
+    'apps.courses',
+    'apps.common',
     'apps.blog',
+    'apps.user',
 ]
+
+# Payment gateways
+
+PAYSTACK_PUBLIC_KEY = env("PAYSTACK_PUBLIC_KEY")
+PAYSTACK_SECRET_KEY = env("PAYSTACK_SECRET_KEY")
+
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 

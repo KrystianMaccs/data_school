@@ -5,6 +5,11 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('macc/', admin.site.urls),
+    path('paystack/', include('paystack.urls')),
+    path('agora/',Agora.as_view(
+    app_id='<APP_ID>',
+    channel='<CHANNEL_ID>'
+)),
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
