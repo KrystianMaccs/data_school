@@ -46,5 +46,9 @@ class Profile(TimeStampedUUIDModel):
         verbose_name=_("Student"), default=False, help_text=_("Have you learned programming before?")
     )
 
+    is_familiar = models.BooleanField(
+        verbose_name=_("Python"), default=False, help_text=_("Do you have any experience with using python?")
+    )
+
     def __str__(self):
         return f"{self.user.username}'s profile"
