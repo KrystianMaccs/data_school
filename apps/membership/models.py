@@ -9,3 +9,10 @@ class Student(Profile):
         verbose_name = "Student"
         verbose_name_plural = "Students"
         
+class Teacher(Profile):
+    students = models.ManyToManyField(Student)
+
+
+    class Meta:
+        verbose_name = "Teacher"
+        verbose_name_plural = "Teachers"
