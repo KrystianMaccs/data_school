@@ -12,7 +12,6 @@ class Student(Profile):
 class Teacher(Profile):
     students = models.ManyToManyField(Student)
 
-
     class Meta:
         verbose_name = "Teacher"
         verbose_name_plural = "Teachers"

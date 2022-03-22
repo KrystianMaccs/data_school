@@ -33,3 +33,22 @@ class Curriculum(TimeStampedUUIDModel):
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     topic = models.CharField(max_length=100)
     sub_topic = models.CharField(max_length=150)
+
+class Course(TimeStampedUUIDModel):
+    title = models.CharField(max_length=50)
+    overview = models.TextField()
+    image = models.ImageField(upload_to=None)
+    url = models.URLField()
+    tutor = models.CharField(max_length=50)
+
+class Topic(TimeStampedUUIDModel):
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    topic = models.CharField(max_length=50)
+    summary = models.TextField()
+    objective = models.TextField()
+
+class Lesson(TimeStampedUUIDModel):
+    topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
+    description = models.TextField()
+    objective = models.TextField()
+
