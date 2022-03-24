@@ -43,7 +43,6 @@ THIRD_PARTY_APPS = [
 ]
 
 LOCAL_APPS = [
-    'apps.autoscraper'
     'apps.membership',
     'apps.classroom',
     'apps.profiles',

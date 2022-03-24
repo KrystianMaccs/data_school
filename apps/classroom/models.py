@@ -1,8 +1,8 @@
 from django.db import models
-from apps.common.models import TimeStampedUUIDField
+from apps.common.models import TimeStampedUUIDModel
 
 
-class RoomMember(TimeStampedUUIDField):
+class RoomMember(TimeStampedUUIDModel):
     name = models.CharField(max_length=200)
     uid = models.CharField(max_length=1000)
     room_name = models.CharField(max_length=200)
