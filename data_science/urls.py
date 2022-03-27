@@ -6,7 +6,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('macc/', admin.site.urls),
     path('paystack/', include('paystack.urls')),
-    path("api/v1/profiles/", include("apps.profiles.urls")),
+    path("", include("apps.profiles.urls"))
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
