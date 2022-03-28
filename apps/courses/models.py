@@ -15,7 +15,6 @@ class Course(TimeStampedUUIDModel):
     tutor = models.CharField(max_length=50)
 
 
-
 class Curriculum(TimeStampedUUIDModel):
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     topic = models.CharField(max_length=100)

@@ -64,7 +64,6 @@ class Post(TimeStampedUUIDModel):
     category = models.ManyToManyField(PostCategory,related_name='category')
     tag=models.ManyToManyField(PostTag,related_name='tag')
     status = models.IntegerField(choices=STATUS, default=0)
-    
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
