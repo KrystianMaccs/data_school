@@ -32,9 +32,7 @@ class Profile(TimeStampedUUIDModel):
         default=Gender.OTHER,
         max_length=20,
     )
-    country = CountryField(
-        verbose_name=_("Country"), default="NG", blank=False, null=False
-    )
+    country = CountryField(verbose_name=_("Country"), default="NG", blank=False, null=False)
     city = models.CharField(
         verbose_name=_("City"),
         max_length=180,

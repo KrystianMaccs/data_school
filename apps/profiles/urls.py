@@ -5,5 +5,5 @@ from apps.profiles.views import ProfileSerializerView
 app_name = "profiles"
 
 urlpatterns = [
-    path("profiles", ProfileSerializerView.as_view()),
+    #path("profiles", ProfileSerializerView.as_view()),
 ]

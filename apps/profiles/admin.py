@@ -4,8 +4,8 @@ from .models import Profile
 
 
 class ProfileAdmin(admin.ModelAdmin):
-    list_display = ["id", "pkid", "user", "gender", "phone_number", "country", "city"]
-    list_filter = ["gender", "country", "city"]
+    list_display = ["id", "pkid", "user", "country", "gender", "phone_number", "city"]
+    list_filter = ["gender", "city", "country"]
     list_display_links = ["id", "pkid", "user"]
 
 
