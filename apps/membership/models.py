@@ -1,6 +1,5 @@
 from django.db import models
-
-from apps.profiles.models import Profile
+from apps.user.models import User
 from apps.common.models import TimeStampedUUIDModel
 from phonenumber_field.modelfields import PhoneNumberField
 from django_countries.fields import CountryField
@@ -12,6 +11,7 @@ class Gender(models.TextChoices):
     FEMALE = "Female", _("Female")
     OTHER = "Other", _("Other")
 class Student(TimeStampedUUIDModel):
+    student = models.OneToOneField(User, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=30, blank=False, null=False, editable=True)
     last_name = models.CharField(max_length=30, blank=False, null=False, editable=True)
     username = models.CharField(max_length=30, blank=False, null=False, editable=False, unique=True)
@@ -27,6 +27,7 @@ class Student(TimeStampedUUIDModel):
         verbose_name_plural = "Students"
         
 class Teacher(TimeStampedUUIDModel):
+    teacher = models.OneToOneField(User, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=30, blank=False, null=False, editable=True)
     last_name = models.CharField(max_length=30, blank=False, null=False, editable=True)
     username = models.CharField(max_length=30, blank=False, null=False, editable=False, unique=True)

@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework import generics
-from .models import Course, Curriculum, Lesson, Topic
+from apps.courses.models import Course, Curriculum, Lesson, Topic
 from .serializers import CourseSerializer, CurriculumSerializer, TopicSerializer, LessonSerializer
 
 
