@@ -7,7 +7,13 @@ from django.conf.urls import url
 urlpatterns = [
     path('macc/', admin.site.urls),
     path('paystack/', include('paystack.urls')),
-    path('course/', include('courses.urls')),
+    #path('user/', include("apps.user.urls")),
+    path('course/', include("apps.courses.urls")),
+    #path('classroom/', include("apps.classroom.urls")),
+    #path('membership/', include("apps.membership.urls")),
+    #path('blog/', include("apps.blog.urls")),
+    #path('payments/', include("apps.payments.urls")),
+
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 

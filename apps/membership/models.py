@@ -37,7 +37,7 @@ class Teacher(TimeStampedUUIDModel):
     country = CountryField(verbose_name=_("Country"), default="NG", blank=False, null=False)
 
     def __str__(self):
-        return f"{first_name} {last_name}"
+        return self.username
 
     class Meta:
         verbose_name = "Teacher"

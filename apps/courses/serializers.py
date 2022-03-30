@@ -1,4 +1,4 @@
-from .models import Course, Curriculum, Topic, Lesson
+from apps.courses.models import Course, Curriculum, Topic, Lesson
 from phonenumber_field.modelfields import PhoneNumberField
 from django_countries.fields import CountryField
 from rest_framework import serializers
