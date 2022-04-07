@@ -1,6 +1,8 @@
 from django.contrib import admin
-from .models import Student, Teacher
+from .models import Student
 
-admin.site.register(Student)
-admin.site.register(Teacher)
+class StudentAdmin(admin.ModelAdmin):
+    list_display = ("is_familiar", "is_learned", "student")
+
+admin.site.register(Student, StudentAdmin)
 

@@ -1,8 +1,20 @@
 from django.shortcuts import render
-from .serializers import ProfileSerializer
+from apps.profiles.serializers import ProfileSerializer
 from rest_framework import generics
-from .models import Profile
+from apps.profiles.models import Profile
 
-class ProfileSerializerView(ProfileSerializer):
+class ProfileCreateView(generics.CreateAPIView):
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
+
+class ProfileListView(generics.ListAPIView):
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
+
+class ProfileEditView(generics.RetrieveUpdateAPIView):
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
+
+class ProfileDeleteView(generics.DestroyAPIView):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
