@@ -55,7 +55,6 @@ THIRD_PARTY_APPS = [
 ]
 
 LOCAL_APPS = [
-    'apps.membership',
     'apps.classroom',
     'apps.profiles',
     'apps.payments',
