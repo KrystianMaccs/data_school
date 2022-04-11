@@ -1,12 +1,14 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from djoser.serializers import UserCreateSerializer
+from django_countries.serializer_fields import CountryField
+from phonenumber_field.serializerfields import PhoneNumberField
 
 User = get_user_model()
 
 
 
-class UserSerializer(serializers.ModelSerializer):
+class UserSerializers(serializers.ModelSerializer):
     gender = serializers.CharField(source="profile.gender")
     phone_number = PhoneNumberField(source="profile.phone_number")
     profile_photo = serializers.ImageField(source="profile.profile_photo")

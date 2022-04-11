@@ -1,5 +1,6 @@
 from rest_framework import fields, serializers
-from django_countries.fields import CountryField
+from django_countries.serializer_fields import CountryField
+#from django_countries.fields import CountryField
 from phonenumber_field.modelfields import PhoneNumberField
 from .models import Profile
 
