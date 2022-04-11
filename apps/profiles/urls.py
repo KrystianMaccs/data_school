@@ -1,10 +1,5 @@
 from django.urls import path
-from apps.profiles.views import (
-    ProfileCreateView, 
-    ProfileListView,
-    ProfileEditView,
-    ProfileDeleteView
-)
+from .views import *
 
 
 

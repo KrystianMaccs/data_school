@@ -1,5 +1,8 @@
 from rest_framework import fields, serializers
+from django_countries.fields import CountryField
+from phonenumber_field.modelfields import PhoneNumberField
 from .models import Profile
+
 
 class ProfileSerializer(serializers.ModelSerializer):
     username = serializers.CharField(source="user.username")
@@ -32,11 +35,11 @@ class ProfileSerializer(serializers.ModelSerializer):
         return f"{first_name} {last_name}"
 
 
-    def to_representation(self, instance):
+    """def to_representation(self, instance):
         representation = super().to_representation(instance)
         if instance.top_agent:
             representation["top_agent"] = True
-        return representation
+        return representation"""
 
 
 class UpdateProfileSerializer(serializers.ModelSerializer):
@@ -53,8 +56,8 @@ class UpdateProfileSerializer(serializers.ModelSerializer):
             "city",
         ]
 
-    def to_representation(self, instance):
+    """def to_representation(self, instance):
         representation = super().to_representation(instance)
         if instance.top_agent:
             representation["top_agent"] = True
-        return representation
+        return representation"""

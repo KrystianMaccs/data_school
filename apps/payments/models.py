@@ -1,9 +1,8 @@
 from django.db import models
 from apps.common.models import TimeStampedUUIDModel
-from apps.membership.models import Student
 
 class PayStackCustomerInfo(TimeStampedUUIDModel):
-    full_name= models.OneToOneField(Student, on_delete=models.CASCADE, max_length  = 150)
+    #full_name= models.OneToOneField(Student, on_delete=models.CASCADE, max_length  = 150)
     amount = models.PositiveIntegerField()
     email= models.EmailField()
     ref = models.CharField(max_length=200)
