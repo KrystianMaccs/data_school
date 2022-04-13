@@ -30,7 +30,7 @@ urlpatterns = [
     path('macc/', admin.site.urls),
     path('paystack/', include('paystack.urls')),
     path('profiles/', include("apps.profiles.urls")),
-    #path('course/', include("apps.courses.urls")),
+    path('course/', include("apps.courses.urls")),
     #path('classroom/', include("apps.classroom.urls")),
     #path('blog/', include("apps.blog.urls")),
     #path('payments/', include("apps.payments.urls")),

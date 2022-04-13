@@ -7,21 +7,21 @@ class CourseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Course
-        fields = "__all__"
+        fields = ["pkid", "name", "title", "overview", "image", "tutor"]
 
 class CurriculumSerializer(serializers.ModelSerializer):
     class Meta:
         model = Curriculum
-        fields = "__all__"
+        fields = ["pkid", "name", "topic", "sub_topic", "course"]
 
 class TopicSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Topic
-        fields = "__all__"
+        fields = ["pkid", "course", "topic", "summary", "objective"]
 
 class LessonSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Lesson
-        fields = "__all__"
+        fields = ["pkid", "name", "topic", "description", "objective"]
