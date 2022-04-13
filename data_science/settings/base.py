@@ -61,8 +61,8 @@ LOCAL_APPS = [
     'apps.payments',
     'apps.courses',
     'apps.common',
+    'apps.users',
     'apps.blog',
-    'apps.user',
 ]
 
 # Payment gateways
@@ -156,7 +156,7 @@ MEDIA_ROOT = BASE_DIR / "mediafiles"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-AUTH_USER_MODEL = "user.User"
+AUTH_USER_MODEL = "users.User"
 
 import logging
 import logging.config
@@ -233,9 +233,9 @@ DJOSER = {
         "your redirect url",
     ],
     "SERIALIZERS": {
-        "user_create": "accounts.serializers.UserCreateSerializer",  # custom serializer
-        "user": "djoser.serializers.UserSerializer",
-        "current_user": "djoser.serializers.UserSerializer",
-        "user_delete": "djoser.serializers.UserSerializer",
+        "user_create": "apps.users.serializers.CreateUserSerializer,",
+        "user": "apps.users.serializers.UserSerializer",
+        "current_user": "apps.users.serializers.UserSerializer",
+        "user_delete": "djoser.serializers.UserDeleteSerializer",
     },
 }

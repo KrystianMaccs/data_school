@@ -6,8 +6,6 @@ from .views import *
 app_name = "profiles"
 
 urlpatterns = [
-    path("profiles", ProfileCreateView.as_view()),
-    path("profiles-list", ProfileListView.as_view()),
-    path("<int:pk>", ProfileEditView.as_view()),
-    path("<int:pk>/delete", ProfileDeleteView.as_view())
+    path("me/", ProfileListView.as_view(), name="get-profile"),
+    path("update/<str:username>/", ProfileEditView.as_view(), name="update-profile"),
 ]
