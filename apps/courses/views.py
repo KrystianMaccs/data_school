@@ -4,13 +4,14 @@ from apps.courses.models import Course, Curriculum, Lesson, Topic
 from .serializers import CourseSerializer, CurriculumSerializer, TopicSerializer, LessonSerializer
 
 
-class CourseView(generics.CreateAPIView):
-    queryset = Course.objects.all()
-    serializer_class = CourseSerializer
 
-
-class CurriculumView(generics.CreateAPIView):
+class CourseRead(generics.ListAPIView):
     queryset = Curriculum.objects.all()
     serializer_class = CurriculumSerializer
+    permission_classes = []
+class CurriculumRead(generics.ListAPIView):
+    queryset = Curriculum.objects.all()
+    serializer_class = CurriculumSerializer
+    permission_classes = []
 
 
