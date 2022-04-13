@@ -23,6 +23,7 @@ class Curriculum(TimeStampedUUIDModel):
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     topic = models.CharField(max_length=100)
     sub_topic = models.CharField(max_length=150)
+    pdf = models.FileField(upload_to="mediafiles/")
 
     def __str__(self):
         return self.name
