@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework import generics, permissions
-from apps.courses.models import Course, Curriculum, Lesson, Topic
-from .serializers import CourseSerializer, CurriculumSerializer, TopicSerializer, LessonSerializer
+from apps.courses.models import Course, Curriculum
+from .serializers import CourseSerializer, CurriculumSerializer
 
 
 
@@ -12,14 +12,4 @@ class CourseRead(generics.ListAPIView):
 class CurriculumRead(generics.ListAPIView):
     queryset = Curriculum.objects.all()
     serializer_class = CurriculumSerializer
-    permission_classes = []
-
-class TopicRead(generics.ListAPIView):
-    queryset = Topic.objects.all()
-    serializer_class = TopicSerializer
-    permission_classes = []
-
-class LessonRead(generics.ListAPIView):
-    queryset = Lesson.objects.all()
-    serializer_class = LessonSerializer
     permission_classes = []
