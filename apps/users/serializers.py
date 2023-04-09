@@ -1,53 +1,124 @@
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework import serializers
-from django.contrib.auth import get_user_model
-from djoser.serializers import UserCreateSerializer
-from django_countries.serializer_fields import CountryField
-from phonenumber_field.serializerfields import PhoneNumberField
-
-User = get_user_model()
+from apps.users.models import User, StudentProfile, InstructorProfile
 
 
-
-class UserSerializer(serializers.ModelSerializer):
-    gender = serializers.CharField(source="profile.gender")
-    phone_number = PhoneNumberField(source="profile.phone_number")
-    profile_photo = serializers.ImageField(source="profile.profile_photo")
-    country = CountryField(source="profile.country")
-    city = serializers.CharField(source="profile.city")
-    first_name = serializers.SerializerMethodField()
-    last_name = serializers.SerializerMethodField()
-    full_name = serializers.SerializerMethodField(source="get_full_name")
+class ConfirmEmailSerializer(serializers.ModelSerializer):
+    token = serializers.CharField(min_length=1, write_only=True)
+    uidb64 = serializers.CharField(min_length=1, write_only=True)
 
     class Meta:
         model = User
-        fields = [
-            "id",
-            "username",
-            "email",
-            "first_name",
-            "last_name",
-            "full_name",
-            "gender",
-            "phone_number",
-            "profile_photo",
-            "country",
-            "city",
-        ]
+        fields = ['token', 'uidb64']
+        
 
-    def get_first_name(self, obj):
-        return obj.first_name.title()
+class ChangePasswordSerializer(serializers.Serializer):
+    old_password = serializers.CharField(required=True)
+    new_password = serializers.CharField(required=True)
 
-    def get_last_name(self, obj):
-        return obj.last_name.title()
+    
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer): 
 
-    def to_representation(self, instance):
-        representation = super(UserSerializer, self).to_representation(instance)
-        if instance.is_superuser:
-            representation["admin"] = True
-        return representation
+    """Override default token login to include user data"""
 
+    def validate(self, attrs):
+        data = super().validate(attrs)
+        user = self.user
+        if not user.is_verified:
+            raise serializers.ValidationError({"error":"Email is not verified."})
 
-class CreateUserSerializer(UserCreateSerializer):
-    class Meta(UserCreateSerializer.Meta):
+        data.update(
+            {
+                "id": self.user.id,
+                "email": self.user.email,
+                "first_name": self.user.first_name,
+                "last_name": self.user.last_name,
+                "is_superuser": self.user.is_superuser,
+                "is_staff": self.user.is_staff,
+                "is_verified": self.user.is_verified
+            }
+        )
+
+        return data
+    
+
+class UserRegistrationSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True, style={'input_type':'password'})
+
+    # Meta class to specify the model and its fields to be serialized
+    class Meta:
         model = User
-        fields = ["id", "username", "email", "first_name", "last_name", "password"]
+        fields = ['id', 'email', 'first_name', 'last_name', 'password','is_instructor', ] 
+
+    # Method to validate the email entered by the user
+    def validate_email(self, value):
+        if User.objects.filter(email=value).exists():
+            raise serializers.ValidationError("A user with this email address already exists.")
+        return value
+    
+    # Method to validate the password entered by the user
+    def validate_password(self, value):
+        try:
+            validate_password(value)
+        except ValidationError as e:
+            raise serializers.ValidationError(e.messages)
+        return value
+    
+    # Create a new user object using the validated data
+    def create(self, validated_data):
+        user = User.objects.create_user(
+            email = validated_data['email'],
+            first_name=validated_data['first_name'],
+            last_name=validated_data['last_name'],
+            password=validated_data['password'],
+            is_instructor=validated_data['is_instructor'],
+            is_verified=False
+
+        )
+        return user
+    
+
+class UserSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = ['id', 'email', 'first_name', 'last_name', 'is_instructor', 'is_active', 'is_verified', 'created_at',]
+
+
+class StudentProfileSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = StudentProfile
+        fields = "__all__"
+     
+
+class InstructorProfileSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = InstructorProfile
+        fields = "__all__"
+
+
+class RetrieveUserSerializer(serializers.ModelSerializer):
+    student_profile = serializers.SerializerMethodField()
+    instructor_profile = serializers.SerializerMethodField()
+
+    class Meta:
+        model = User
+        fields = ['id', 'email', 'first_name', 'last_name', 'is_instructor', 'is_active', 'is_verified', 'created_at', 'student_profile', 'instructor_profile']
+
+    def get_student_profile(self, obj):
+        try:
+            profile = obj.student_profile
+            return StudentProfileSerializer(profile).data
+        except StudentProfile.DoesNotExist:
+            return None
+
+    def get_instructor_profile(self, obj):
+        try:
+            profile = obj.instructor_profile
+            return InstructorProfileSerializer(profile).data
+        except InstructorProfile.DoesNotExist:
+            return None

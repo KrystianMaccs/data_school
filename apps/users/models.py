@@ -1,39 +1,93 @@
 import uuid
-
-from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
+import contextlib
+from shortuuid.django_fields import ShortUUIDField 
+from phonenumber_field.modelfields import PhoneNumberField
+from django_countries.fields import CountryField
+from django.conf import settings
+from django.contrib.auth.models import AbstractUser, PermissionsMixin
 from django.db import models
-from django.utils import timezone
-from django.utils.translation import gettext_lazy as _
 
-from .managers import CustomUserManager
+from apps.users.manager import UserManager
 
 
-class User(AbstractBaseUser, PermissionsMixin):
-    pkid = models.BigAutoField(primary_key=True, editable=False)
-    id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
-    username = models.CharField(verbose_name=_("Username"), max_length=255, unique=True)
-    first_name = models.CharField(verbose_name=_("First Name"), max_length=50)
-    last_name = models.CharField(verbose_name=_("Last Name"), max_length=50)
-    email = models.EmailField(verbose_name=_("Email Address"), unique=True)
-    is_staff = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=True)
-    date_joined = models.DateTimeField(default=timezone.now)
+class User(AbstractUser, PermissionsMixin):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    username = None
+    email = models.EmailField(unique=True)
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
+    is_instructor = models.BooleanField(default=False)
+    is_verified = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    objects = UserManager()
 
     USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = ["username", "first_name", "last_name"]
-
-    objects = CustomUserManager()
-
-    class Meta:
-        verbose_name = _("User")
-        verbose_name_plural = _("Users")
+    REQUIRED_FIELDS = ["first_name", "last_name"]
+    
+    def save(self, *args, **kwargs):
+        if self.is_superuser:
+            self.is_verified = True 
+        return super().save(*args, **kwargs)
 
     def __str__(self):
-        return self.username
+        return self.email
 
-    @property
-    def get_full_name(self):
-        return f"{self.first_name} {self.last_name}"
 
-    def get_short_name(self):
-        return self.username
+class StudentProfile(models.Model):
+    id = ShortUUIDField(primary_key=True, length=6, max_length=6, editable=False)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='student_profile')
+    date_of_birth = models.DateField(blank=True, null=True)
+    gender = models.CharField(max_length=10, blank=True, null=True)
+    phone_number = PhoneNumberField(blank=True, null=True)
+    address = models.CharField(max_length=100, blank=True, null=True)
+    city = models.CharField(max_length=50, blank=True, null=True)
+    state = models.CharField(max_length=50, blank=True, null=True)
+    country = models.CharField(max_length=50, blank=True, null=True)
+    bio = models.TextField(blank=True, null=True)
+    profile_picture = models.ImageField(upload_to='users/student/profile_pictures/', blank=True, null=True)
+
+    class Meta:
+        verbose_name_plural = 'Student Profiles'
+
+    def __str__(self):
+        return self.user.email
+
+    def save(self, *args, **kwargs):
+        """Deletes old profile_picture when making an update to profile_picture"""
+        with contextlib.suppress(Exception):
+            old = StudentProfile.objects.get(id=self.id)
+            if old.profile_picture != self.profile_picture:
+                old.profile_picture.delete(save=False)
+        super().save(*args, **kwargs)
+
+
+class InstructorProfile(models.Model):
+    id = ShortUUIDField(primary_key=True, length=6, max_length=6, editable=False)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='instructor_profile')
+    date_of_birth = models.DateField(blank=True, null=True)
+    gender = models.CharField(max_length=10, blank=True, null=True)
+    phone_number = PhoneNumberField(blank=True, null=True)
+    address = models.CharField(max_length=100, blank=True, null=True)
+    city = models.CharField(max_length=50, blank=True, null=True)
+    state = models.CharField(max_length=50, blank=True, null=True)
+    country = models.CharField(max_length=50, blank=True, null=True)
+    bio = models.TextField(blank=True, null=True)
+    profile_picture = models.ImageField(upload_to='users/instructor/profile_pictures/', blank=True, null=True)
+    total_students = models.PositiveIntegerField(default=0)
+    reviews = models.PositiveIntegerField(default=0)
+    linkedin = models.URLField(blank=True, null=True)
+
+    class Meta:
+        verbose_name_plural = 'Instructor Profiles'
+
+    def __str__(self):
+        return self.user.email
+
+    def save(self, *args, **kwargs):
+        """Deletes old profile_picture when making an update to profile_picture"""
+        with contextlib.suppress(Exception):
+            old = InstructorProfile.objects.get(id=self.id)
+            if old.profile_picture != self.profile_picture:
+                old.profile_picture.delete(save=False)
+        super().save(*args, **kwargs)
