@@ -2,17 +2,7 @@
 
 This is an API for a Data School project built with Django Rest Framework (DRF). The API allows users to enroll in courses, complete lessons and quizzes, and track their progress. Instructors can create and manage courses, lessons, and quizzes, as well as view information about enrolled users.
 
-System Architecture
----------------
 
-![Data School Microservices (2)](https://user-images.githubusercontent.com/29266211/223722821-d64cbe95-6a67-4f99-bf72-0bfffe675378.jpg)
-
-
-ER Diagram
----------------
-![Data Learning (2)](https://user-images.githubusercontent.com/29266211/229353168-cc3c2af8-61cc-4d8f-a9f5-02b8ad2c1357.png)
-
-link: https://dbdiagram.io/d/64087c2f296d97641d865ec8
 
 Getting Started
 ---------------
